@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CodeSage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            text-align: center;
+        }
+
+        h1 { font-size: 22px; margin-bottom: 5px; }
+
+        .subtitle {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+
+        #drop-area {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            background: #fafafa;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            border: none;
+            background: #667eea;
+            color: white;
+            border-radius: 6px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background: #5a67d8;
+        }
+
+        .file-name {
+            margin-top: 10px;
+            font-size: 12px;
+            word-break: break-all;
+        }
+
+        #loader {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .hidden { display: none; }
+
+        /* 📱 Mobile */
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            button {
+                font-size: 13px;
+                padding: 9px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>🚀 CodeSage</h1>
+    <p class="subtitle">Upload Folder or Files</p>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form id="uploadForm" action="/analyze" method="post" enctype="multipart/form-data">
+        
+        <div id="drop-area">
+            <p>📂 Select Folder or Files</p>
+
+            <input type="file" name="files" id="folderInput"
+                   webkitdirectory directory multiple hidden>
+
+            <input type="file" name="files" id="fileInput"
+                   multiple hidden accept=".py,.js,.ts,.json,.html,.css">
+
+            <button type="button" onclick="folderInput.click()">📁 Upload Folder</button>
+            <button type="button" onclick="fileInput.click()">📄 Upload Files</button>
+
+            <p id="file-name" class="file-name"></p>
+        </div>
+
+        <button type="submit">Analyze Code</button>
+    </form>
+
+    <div id="loader" class="hidden">⏳ Analyzing...</div>
+</div>
+
+<script>
+const folderInput = document.getElementById("folderInput");
+const fileInput = document.getElementById("fileInput");
+const fileNameDisplay = document.getElementById("file-name");
+const form = document.getElementById("uploadForm");
+const loader = document.getElementById("loader");
+
+function showFiles(input) {
+    const files = input.files;
+    if (!files.length) return;
+    fileNameDisplay.textContent = `${files.length} files selected`;
+}
+
+folderInput.addEventListener("change", () => showFiles(folderInput));
+fileInput.addEventListener("change", () => showFiles(fileInput));
+
+form.addEventListener("submit", e => {
+    if (!folderInput.files.length && !fileInput.files.length) {
+        e.preventDefault();
+        alert("Please upload folder or files");
+        return;
+    }
+    loader.classList.remove("hidden");
+});
+</script>
+
+</body>
+</html>

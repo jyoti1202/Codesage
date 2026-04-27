@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analysis Result - CodeSage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        html, body {
+            margin: 0;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            background-attachment: fixed;
+            padding: 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 22px;
+        }
+
+        .summary {
+            text-align: center;
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            color: white;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .high-box { background: #e74c3c; }
+        .medium-box { background: #f39c12; }
+        .low-box { background: #3498db; }
+
+        .card {
+            background: #f9fafc;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .file-title {
+            font-weight: 600;
+            font-size: 13px;
+            word-break: break-all;
+        }
+
+        .toggle-btn {
+            margin-top: 10px;
+            color: #667eea;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .hidden { display: none; }
+
+        .badge {
+            padding: 3px 6px;
+            font-size: 10px;
+            border-radius: 5px;
+            color: white;
+        }
+
+        .high { background: #e74c3c; }
+        .medium { background: #f39c12; }
+        .low { background: #3498db; }
+
+        .ai-box {
+            background: #eef2ff;
+            padding: 8px;
+            border-radius: 6px;
+            margin-top: 5px;
+            font-size: 12px;
+        }
+
+        .back-btn {
+            width: 100%;
+            margin-top: 25px;
+            padding: 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            background: #5a67d8;
+        }
+
+        /* 📱 Mobile */
+        @media (max-width: 600px) {
+            .stats {
+                flex-direction: column;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>🚀 Analysis Result</h1>
+    <p class="summary">Files: {{ result.total_files }}</p>
+
+    {% set ns = namespace(high=0, medium=0, low=0) %}
+    {% for file in result.results %}
+        {% for issue in file.rule_issues %}
+            {% if issue.severity == "High" %}
+                {% set ns.high = ns.high + 1 %}
+            {% elif issue.severity == "Medium" %}
+                {% set ns.medium = ns.medium + 1 %}
+            {% else %}
+                {% set ns.low = ns.low + 1 %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+    <div class="stats">
+        <div class="stat-box high-box">🔥 {{ ns.high }}</div>
+        <div class="stat-box medium-box">⚠️ {{ ns.medium }}</div>
+        <div class="stat-box low-box">ℹ️ {{ ns.low }}</div>
+    </div>
+
+    {% for file in result.results %}
+    <div class="card">
+        <div class="file-title">{{ file.file }}</div>
+
+        <div class="toggle-btn" onclick="toggleSection('r{{ loop.index }}')">Issues</div>
+        <div id="r{{ loop.index }}" class="hidden">
+            {% for issue in file.rule_issues %}
+                <p>{{ issue.issue }}
+                <span class="badge {{ issue.severity | lower }}">
+                    {{ issue.severity }}
+                </span></p>
+            {% endfor %}
+        </div>
+
+        <div class="toggle-btn" onclick="toggleSection('a{{ loop.index }}')">AI</div>
+        <div id="a{{ loop.index }}" class="hidden ai-box">
+            {{ file.ai_analysis }}
+        </div>
+    </div>
+    {% endfor %}
+
+    <button class="back-btn" onclick="window.location.href='/'">
+        Back
+    </button>
+</div>
+
+<script>
+function toggleSection(id){
+    document.getElementById(id).classList.toggle("hidden");
+}
+</script>
+
+</body>
+</html>
