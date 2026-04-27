@@ -1,0 +1,35 @@
+# Virtual environments — NEVER commit these
+.venv/
+venv/
+venv311/
+env/
+ENV/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*.pyd
+*.pyo
+
+# Compiled binaries & DLLs
+*.dll
+*.so
+*.lib
+
+# Junk uploads
+uploads/*.zip
+uploads/*.dll
+uploads/*.exe
+
+# Environment secrets
+.env
+*.env
+
+# Distribution / build
+dist/
+build/
+*.egg-info/
+
+# OS files
+.DS_Store
+Thumbs.db
