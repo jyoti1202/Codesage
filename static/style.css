@@ -1,0 +1,105 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+}
+
+.container {
+    max-width: 700px;
+    margin: auto;
+    padding: 40px;
+    text-align: center;
+}
+
+.subtitle {
+    color: #94a3b8;
+}
+
+/* Drag Drop */
+#drop-area {
+    border: 2px dashed #38bdf8;
+    padding: 30px;
+    margin: 20px 0;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+#drop-area.highlight {
+    background: rgba(56, 189, 248, 0.1);
+}
+
+/* Buttons */
+button {
+    padding: 10px 20px;
+    background: #22c55e;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.analyze-btn {
+    margin-top: 15px;
+    width: 100%;
+    background: #3b82f6;
+}
+
+.back-btn {
+    display: inline-block;
+    margin-top: 20px;
+    color: #38bdf8;
+}
+
+/* Loader */
+.hidden {
+    display: none;
+}
+
+/* Cards */
+.card {
+    background: #1e293b;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+    text-align: left;
+}
+
+/* Issues */
+.issue {
+    background: #0f172a;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.file {
+    font-weight: bold;
+}
+
+.desc {
+    flex: 1;
+    margin-left: 10px;
+}
+
+/* Badges */
+.badge {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+}
+
+.high {
+    background: #ef4444;
+}
+
+.medium {
+    background: #f59e0b;
+}
+
+.low {
+    background: #22c55e;
+}
